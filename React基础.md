@@ -115,6 +115,85 @@
 <font color=red>**注：**</font>并不是组件中用到的所有变量都是组件的状态！当存在多个组件共同依赖一个状态时，一般的做法是状态上移，将这个状态放到这几个组件的公共父组件中。
 
 ## **setState()**
+**使用this.state.xxx是不会去改变状态值，必须使用this.setState去改变state状态值**
+
+* 调用setState后，setState会把要修改的状态放入一个队列中（因而 组件的state并不会立即改变）；
+
+* 之后React 会优化真正的执行时机，来优化性能，所以优化过程中有可能会将多个 setState 的状态修改合并为一次状态修改，因而state更新可能是异步的。
+
+* 所以不要依赖当前的State，计算下个State。当真正执行状态修改时，依赖的this.state并不能保证是最新的State，因为React会把多次State的修改合并成一次，这时，this.state将还是这几次State修改前的State。另外需要注意的事，同样不能依赖当前的Props计算下个状态，因为Props一般也是从父组件的State中获取，依然无法确定在组件状态更新时的值。
+
+```
+<!-- 这样去做计算是错误的 -->
+this.setState({
+  counter: this.state.counter + this.props.increment,
+});
+```
+要想解决上面错误，我们学使用 this.setState() 的另一种形式,使它接受一个函数而不是一个对象。这个函数有两个参数：
+* 第一个是当前最新状态的前一个状态（本次组件状态修改前的状态）
+
+* 第二个是当前最新的属性props
+
+```
+this.setState((prevState, props) => ({
+  counter: prevState.counter + props.increment
+}));
+```
+
+## **关于state的demo**
+```
+<script type="text/babel">
+    var  TextBoxComponent = React.createClass({
+        <!-- getInitialState 必须有返回值  在es6中取消该写法采用 constructor() 方法-->
+        getInitialState:function(){
+            return {enable:false}
+        },
+        handleClick:function(event){
+            this.setState({enable:!this.state.enable})
+        },
+        render:function(){
+            return (
+                <p>
+                    <input type="text" disabled={this.state.enable} />
+                    <button onClick={this.handleClick}>改变textbox状态</button>
+                </p>
+            )
+        }
+    });
+
+    ReactDOM.render(<TextBoxComponent/>,document.getElementById("reactContainer"));
+</script>
+```
+## **React组件：props和render成员**
+props是组件固有属性的集合，其数据由外部传入，一般在整个组件的生命周期中都是只读的。属性的初识值通常由React.createElement函数或者JSX中标签的属性值进行传递，并合并到组件实例对象的this.props中。
+
+**初识一下props**
+```
+<script type="text/babel">
+    var Hello = React.createClass({
+    getInitialState:function(){
+        return {
+            enable:false
+        }
+    },
+    hand:function(event){
+        this.setState({enable:!this.state.enable})
+    },
+    render: function() {
+      return (
+        <div>
+            <h1>
+               {'Hello' + this.props.name + this.props.sex}
+            </h1>
+        </div>
+      );
+    },
+  });
+  ReactDOM.render(<Hello name="王先森" sex="男"></Hello>, document.getElementById('box'));
+  
+</script>
+```
+
 
 
 
