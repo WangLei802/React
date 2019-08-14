@@ -14,7 +14,7 @@
 - - -
 ``` 
     <!-- react此时用到了JSX语法 需引入以下js文件 并且需要添加type类型为 text/babel  -->
-    <!-- 此处必须添加次类型值  否则不可使用JSX语法去进行编码 -->
+    <!-- 此处必须添加此类型值  否则不可使用JSX语法去进行编码 -->
     <script src="http://cdn.bootcss.com/babel-core/5.8.38/browser.min.js"></script>
     <script type="text/babel">
         var Hello = React.createClass({
