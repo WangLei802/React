@@ -124,7 +124,7 @@
 * 所以不要依赖当前的State，计算下个State。当真正执行状态修改时，依赖的this.state并不能保证是最新的State，因为React会把多次State的修改合并成一次，这时，this.state将还是这几次State修改前的State。另外需要注意的事，同样不能依赖当前的Props计算下个状态，因为Props一般也是从父组件的State中获取，依然无法确定在组件状态更新时的值。
 
 ```
-<!-- 这样去做计算是错误的 -->
+/* 这样去做计算是错误的 */
 this.setState({
   counter: this.state.counter + this.props.increment,
 });
@@ -144,7 +144,7 @@ this.setState((prevState, props) => ({
 ```
 <script type="text/babel">
     var  TextBoxComponent = React.createClass({
-        <!-- getInitialState 必须有返回值  在es6中取消该写法采用 constructor() 方法-->
+        /* getInitialState 必须有返回值  在es6中取消该写法采用 constructor() 方法 */
         getInitialState:function(){
             return {enable:false}
         },
