@@ -34,7 +34,6 @@ class testComponent extends Component{
               sadas
             */
             <Fragment>
-<<<<<<< HEAD
               <div>
                 <input value={this.state.str} onChange={this.change}/> <button onClick={this.add}> 增加服务 </button>
               </div>
@@ -43,13 +42,6 @@ class testComponent extends Component{
                   return <li key={index+res} onClick={this.cli.bind(this,index)}>{res}</li>
                 })}
               </ul> 
-=======
-               <div><input /> <button> 增加服务 </button></div>
-               <ul>
-                   <li>头部按摩4</li>
-                   <li>精油推背</li>
-               </ul> 
->>>>>>> 815cd9cbd3968b8e1b4b634b8092ad31b4d9d347
             </Fragment>
         )
     }
