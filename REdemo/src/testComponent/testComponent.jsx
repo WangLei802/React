@@ -5,7 +5,7 @@ class testComponent extends Component{
       super(props)
       this.state = {
         arr:['angular','vue','react'],
-        arr1:['头部按摩','精油推背'],
+        arr1:[],
         inp:''
       }
     }
@@ -13,7 +13,8 @@ class testComponent extends Component{
       console.log('1111')
       const state = this.state
       this.setState({
-        arr1:[...state.arr1,state.inp]
+        arr1:[...state.arr1,state.inp],
+        inp:'',
       })
     }
     change = (e) =>{
@@ -22,7 +23,15 @@ class testComponent extends Component{
       })
     }
     cli(index){
+      /* arr1: this.state.arr1.filter((_, i) => i !== index)*/ 
+      /*
+      const a = this.state.arr1
       console.log(index)
+      a.splice(index,1)
+      this.setState({
+        arr1: a
+      })
+      console.log(a)*/
       this.setState({
         arr1: this.state.arr1.filter((_, i) => i !== index)
       })
@@ -35,7 +44,7 @@ class testComponent extends Component{
             */
             <Fragment>
               <div>
-                <input value={this.state.str} onChange={this.change}/> <button onClick={this.add}> 增加服务 </button>
+                <input value={this.state.inp} onChange={this.change}/> <button onClick={this.add}> 增加服务 </button>
               </div>
               <ul>
                 {this.state.arr1.map((res,index)=>{
