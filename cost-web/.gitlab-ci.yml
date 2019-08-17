@@ -1,0 +1,98 @@
+variables:
+    VAR_DS_NAME_DEV: 'cost-web'
+    VAR_DS_PORT_DEV: '12080:80'
+    VAR_IMAGE_NAME_DEV: 'cost-web'
+    VAR_GW_SERVICE_DEV: 'gateway-sit'
+
+    VAR_DS_NAME_TEST: 'cost-web-test'
+    VAR_DS_PORT_TEST: '12081:80'
+    VAR_IMAGE_NAME_TEST: 'cost-web'
+    VAR_GW_SERVICE_TEST: 'gateway-test'
+
+    VAR_TAG_CMD: 'git describe --tags --abbrev=0'
+stages:
+- build
+- install
+- deploy
+
+#cache:
+#  paths:
+#    - node_modules/
+
+build-dev:
+  stage: build
+  image: node
+  script:
+    - npm install --registry=https://registry.npm.taobao.org
+    - npm run build
+  artifacts:
+    paths:
+      - dist/*
+  only:
+    - dev
+
+install-dev:
+  stage: install
+  image: docker:18.03.0-ce-git
+  services:
+  - name: docker:18.03.0-ce-dind
+    command: ["--insecure-registry=172.19.50.78:5000", "--registry-mirror=http://f36b89ac.m.daocloud.io"]
+  script:
+  - export REGISTRY=172.19.50.78:5000
+  - docker build -t $VAR_IMAGE_NAME_DEV .
+  - docker tag $VAR_IMAGE_NAME_DEV ${REGISTRY}/$VAR_IMAGE_NAME_DEV
+  - docker push ${REGISTRY}/$VAR_IMAGE_NAME_DEV
+  dependencies:
+  - build-dev
+  only:
+    - dev
+
+deploy-dev:
+  stage: deploy
+  script:
+  - ssh root@172.19.50.42 /data/deployment-web.sh $VAR_DS_NAME_DEV $VAR_DS_PORT_DEV $VAR_IMAGE_NAME_DEV $VAR_GW_SERVICE_DEV
+  dependencies:
+  - install-dev
+  only:
+    - dev
+
+build-master:
+  stage: build
+  image: node
+  script:
+    - npm install --registry=https://registry.npm.taobao.org
+    - npm run build
+  artifacts:
+    paths:
+      - dist/*
+  only:
+    - tags
+  except:
+    - dev
+
+install-master:
+  stage: install
+  image: docker:18.03.0-ce-git
+  services:
+  - name: docker:18.03.0-ce-dind
+    command: ["--insecure-registry=172.19.50.78:5000", "--registry-mirror=http://f36b89ac.m.daocloud.io"]
+  script:
+  - export REGISTRY=172.19.50.78:5000
+  - docker build -t $VAR_IMAGE_NAME_TEST .
+  - docker tag $VAR_IMAGE_NAME_TEST ${REGISTRY}/$VAR_IMAGE_NAME_TEST:$($VAR_TAG_CMD)
+  - docker push ${REGISTRY}/$VAR_IMAGE_NAME_TEST:$($VAR_TAG_CMD)
+  dependencies:
+  - build-master
+  only:
+    - tags
+  except:
+    - dev
+
+deploy-test:
+  stage: deploy
+  script:
+  - ssh root@172.19.50.42 /data/deployment-web.sh $VAR_DS_NAME_TEST $VAR_DS_PORT_TEST $VAR_IMAGE_NAME_TEST:$($VAR_TAG_CMD) $VAR_GW_SERVICE_TEST
+  only:
+    - tags
+  except:
+    - dev
