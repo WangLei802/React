@@ -1,11 +1,13 @@
 import React,{Component,Fragment} from 'react';
 import '../App.css'
+import XiaojiejieItem from './XiaojiejieItem'
+
 class testComponent extends Component{
     constructor(props){
       super(props)
       this.state = {
         arr:['angular','vue','react'],
-        arr1:[],
+        arr1:['555'],
         inp:''
       }
     }
@@ -46,9 +48,16 @@ class testComponent extends Component{
               <div>
                 <input value={this.state.inp} onChange={this.change}/> <button onClick={this.add}> 增加服务 </button>
               </div>
+              {/* <li key={index+res} onClick={this.cli.bind(this,index)}>{res}</li> */}
               <ul>
                 {this.state.arr1.map((res,index)=>{
-                  return <li key={index+res} onClick={this.cli.bind(this,index)}>{res}</li>
+                  return(
+                    <XiaojiejieItem 
+                    key={index+res}  
+                    content={res} 
+                    index={index}
+                    cli={this.cli.bind(this)}/>
+                  )
                 })}
               </ul> 
             </Fragment>
