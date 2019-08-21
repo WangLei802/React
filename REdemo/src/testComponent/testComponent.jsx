@@ -1,6 +1,7 @@
 import React,{Component,Fragment} from 'react';
 import '../App.css'
 import XiaojiejieItem from './XiaojiejieItem'
+import DvcComponent from './DvcComponent'
 
 class testComponent extends Component{
     constructor(props){
@@ -60,6 +61,7 @@ class testComponent extends Component{
                   )
                 })}
               </ul> 
+              <DvcComponent></DvcComponent>
             </Fragment>
         )
     }
