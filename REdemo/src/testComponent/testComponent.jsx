@@ -9,7 +9,8 @@ class testComponent extends Component{
       this.state = {
         arr:['angular','vue','react'],
         arr1:['555'],
-        inp:''
+        inp:'',
+        count:0
       }
     }
     add = () =>{
@@ -61,7 +62,7 @@ class testComponent extends Component{
                   )
                 })}
               </ul> 
-              <DvcComponent></DvcComponent>
+              
             </Fragment>
         )
     }
