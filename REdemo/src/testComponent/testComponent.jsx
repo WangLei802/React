@@ -8,7 +8,7 @@ class testComponent extends Component{
       super(props)
       this.state = {
         arr:['angular','vue','react'],
-        arr1:['555'],
+        arr1:[],
         inp:'',
         count:0
       }
@@ -58,6 +58,7 @@ class testComponent extends Component{
                     key={index+res}  
                     content={res} 
                     index={index}
+                    // avname='波多野结衣'
                     cli={this.cli.bind(this)}/>
                   )
                 })}
