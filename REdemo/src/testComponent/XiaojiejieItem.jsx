@@ -3,7 +3,14 @@ import PropTypes from 'prop-types'
 
 class XiaojiejieItem   extends Component {
     // state = { :  }
-    
+    shouldComponentUpdate(nextProps,nextState){
+        if(nextProps.content !== this.props.content){
+            return true
+        }else{
+            return false
+        }
+       
+    }
     render() { 
         return (
            <li onClick={this.click.bind(this)}>

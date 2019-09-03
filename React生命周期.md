@@ -2,6 +2,7 @@
 一个组件完整的生命周期包含实例化阶段、活动阶段、销毁阶段三个阶段。每个阶段又由相应的方法管理。
 
 **其主要有三个阶段**
+* Initialization:初始化阶段
 * mounting:表示正在挂接虚拟DOM到真实DOM。
 * updating:表示正在被重新渲
 * unmounting:表示正在将虚拟DOM移除真实DOM
