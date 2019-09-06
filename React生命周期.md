@@ -51,6 +51,8 @@
             sum:2
         }
     },
+    shouldComponentUpdate(nextProps, nextState)
+    //当 props 或 state 发生变化时，shouldComponentUpdate() 会在渲染执行之前被调用。返回值默认为 true。首次渲染或使用 forceUpdate() 时不会调用该方法。 (有损性能)
 
     // 组件初始化时只调用，以后组件更新不调用，整个生命周期只调用一次，此时可以修改state。
     componentWillMount(){

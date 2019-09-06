@@ -58,7 +58,7 @@ class testComponent extends Component{
                     key={index+res}  
                     content={res} 
                     index={index}
-                    // avname='波多野结衣'
+                    avname='波多野结衣'
                     cli={this.cli.bind(this)}/>
                   )
                 })}
