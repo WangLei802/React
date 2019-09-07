@@ -1,29 +1,44 @@
 import React, { Component,Fragment } from 'react';
 import './Todolist.css'
 import 'antd/dist/antd.css'
+import store from './store'
 import { Input, Button, List} from 'antd'
 
-const data = [
-    '早8点开晨会，分配今天的开发工作',
-    '早9点和项目经理作开发需求讨论会',
-    '晚5:30对今日代码进行review'
-]
 class TodoList extends Component {
     constructor(props) {
         super(props);
-        this.state = {  }
+        this.state = store.getState()
+        console.log(store.getState())
+        //----------关键代码-----------start
+        this.storeChange = this.storeChange.bind(this)  //转变this指向
+        store.subscribe(this.storeChange) //订阅Redux的状态
+    }
+    changeInputValue(e){
+        // Action就是一个对象
+        const action ={
+            type:'changeInput',                  //对action的描述
+            value:e.target.value                        //要改变的值
+        }
+        //要通过dispatch()方法传递给store
+        store.dispatch(action)
+    }
+    click(){
+        const action = {
+            type:'addItem'
+        }
+        store.dispatch(action)
     }
     render() { 
         return ( 
             <Fragment>
                 <div className='margin'>
                     <h1>Antd-UI框架</h1>
-                    <Input placeholder='jspang' style={{ width:'250px'}}/>
-                    <Button type="primary">Primary</Button>
+                    <Input placeholder={this.state.inputValue} style={{ width:'250px'}} onChange={this.changeInputValue.bind(this)}/>
+                    <Button type="primary" onClick={this.click.bind(this)}>Primary</Button>
                     <div style={{margin: '20px auto',width:'600px',}}>
                         <List 
                         bordered
-                        dataSource={data}
+                        dataSource={this.state.list}
                         renderItem={item=>(<List.Item>{item}</List.Item>)}
                         /> 
                     </div>
@@ -31,6 +46,9 @@ class TodoList extends Component {
                 </div>    
             </Fragment>
          );
+    }
+    storeChange(){
+        this.setState(store.getState())
     }
 }
  
