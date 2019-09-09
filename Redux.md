@@ -97,3 +97,62 @@ import reducer from './reducer'
 const store = createStore(reducer) // 创建数据存储仓库
 export default store   //暴露出去
 ```
+### **在store中为todoList初始化数据**
+仓库store和reducer都创建好了，可以初始化一下todoList中的数据了，在reducer.js文件的defaultState对象中，加入两个属性:inputValue和list
+
+```
+const defaultState = {
+    inputValue : 'Nmae',
+    list:[
+        '11111',
+        '22222'
+    ]
+}  
+```
+
+### **todolist组件获得store中的数据**
+
+先引入  import store from './store/index'
+
+引入后我们可以使用构造方法在控制台将引入的的store数据进行打印
+
+```
+constructor(props){
+    super(props)
+    console.log(store.getState())
+}
+```
+接下来我们将store中的数据对todolist文件的数据进行赋值
+
+```
+class TodoList extends Component {
+constructor(props){
+    super(props)
+    //关键代码-----------start
+    this.state=store.getState();
+    //关键代码-----------end
+    console.log(this.state)
+}
+    render() { 
+        return ( 
+            <div style={{margin:'10px'}}>
+                <div>
+                    <Input placeholder={this.state.inputValue} style={{ width:'250px', marginRight:'10px'}}/>
+                    <Button type="primary">Add</Button>
+                </div>
+                <div style={{margin:'10px',width:'300px'}}>
+                    <List
+                        bordered
+                        //关键代码-----------start
+                        dataSource={this.state.list}
+                        //关键代码-----------end
+                        renderItem={item=>(<List.Item>{item}</List.Item>)}
+                    />    
+                </div>
+            </div>
+         );
+    }
+}
+export default TodoList;
+```
+以上就是创建store，reduce和如何使用store中的数据的一些基本知识点
