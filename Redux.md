@@ -55,3 +55,45 @@ class TodoList extends Component {
 }
 export default TodoList;
 ```
+
+todolist 组件上面已经完成  接下来我们就开始学习redux数据更新渲染以及各个文件的作用
+
+
+
+### **创建Redux中的store及reducer文件**
+
+**redux的工作流程有四个 react components --> action -->store <==> reducers
+store --> react components**
+
+其中最重要的便是 **store**，所有的数据都要放到**store**中进行管理，所以我们要优先对store文件进行编写
+
+* 先安装redux
+```
+npm install --save redux
+```
+* 在src文件下建立store文件，在该文件下创建index文件进行编码
+```
+import { createStore } from 'redux'  // 引入createStore方法
+const store = createStore()          // 创建数据存储仓库
+export default store                 //暴露出去
+```
+
+* 现在的这个仓库很混乱   我们此时就需要用一个有管理能力的模块来管理仓库 这个模块就是redux，在store文件下建立redux.js文件
+
+```
+const defaultState = {}  //默认数据
+export default (state = defaultState,action)=>{  //就是一个方法函数
+    return state
+}
+```
+* **state:** 是整个项目中需要管理的数据信息,这里我们没有什么数据，所以用空对象来表示。
+
+* **reducer**文件建立好了，把reducer引入到store中,再创建store时，以参数的形式传递给store。
+
+将index文件进行改造
+```
+import { createStore } from 'redux'  //  引入createStore方法
+import reducer from './reducer'    
+const store = createStore(reducer) // 创建数据存储仓库
+export default store   //暴露出去
+```
