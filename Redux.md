@@ -186,3 +186,14 @@ changeInputValue(e){
 }
 ```
 * **Action**里面有两个属性，第一个则是对**action**的描述，第二个则是要改变的值
+
+* 到这里还不能说可以改变到**store**里面的值，需要注意的是创建完**action**我们必须去通过**dispatch()** 方法传递给 **store**
+```
+changeInputValue(e){
+    const action ={
+        type:'changeInput',
+        value:e.target.value
+    }
+    store.dispatch(action)
+}
+```
