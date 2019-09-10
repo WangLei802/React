@@ -1,4 +1,4 @@
-# Redux
+# **Redux**
 
 ### 学习了之前的react基础语法糖及重要的生命周期后，自己对react的机制及思想更深了一点，作为码畜啊，就得不能把自己当人看，学不死往死学，接下来就继续探索react重要的用来管理管理数据状态和UI状态的JavaScript应用工具---- Redux
 
@@ -247,4 +247,48 @@ constructor(props){
 storeChange(){
      this.setState(store.getState())
  }
+```
+现在在浏览器中就可以组件跟rudux同步进行了改变
+
+### **完善TodoList组件**
+
+給按钮添加事件
+
+```
+<Button type="primary" onClick={this.click.bind(this)}>Primary</Button>
+click(){
+    console.log('click')
+}
+```
+
+## 接下来创建 **Action** 并使用 **dispath()** 传递给 **store**
+
+```
+click(){
+    const action = {
+        type:ADD_ITEM
+    }
+    store.dispatch(action)
+}
+```
+此时已经把 **action** 传递到了 **store** ，然后到 **reducer** 进行业务逻辑编写
+
+```
+export default (state = defaultState,action)=>{
+    if(action.type === 'changeInput'){
+        let newState = JSON.parse(JSON.stringify(state)) //深度拷贝state
+        newState.inputValue = action.value
+        return newState
+    }
+    //关键代码------------------start----------
+    //state值只能传递，不能使用
+    if(action.type === 'addItem' ){ //根据type值，编写业务逻辑
+        let newState = JSON.parse(JSON.stringify(state)) 
+        newState.list.push(newState.inputValue)  //push新的内容到列表中去
+        newState.inputValue = ''
+        return newState
+    }
+     //关键代码------------------end----------
+    return state
+}
 ```
