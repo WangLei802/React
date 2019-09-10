@@ -156,3 +156,33 @@ constructor(props){
 export default TodoList;
 ```
 以上就是创建store，reduce和如何使用store中的数据的一些基本知识点
+
+接下来就来感受一下redux工作流程
+
+* 添加input响应事件 onChange 事件  在todolist.js文件中
+```
+<Input 
+    placeholder={this.state.inputValue} 
+    style={{ width:'250px', marginRight:'10px'}}
+    //---------关键代码----start
+    onChange={this.changeInputValue.bind(this)}
+    //---------关键代码----end
+/>
+
+changeInputValue(e){
+    console.log(e.target.value)
+}
+```
+基于前面的学习  现在input 的事件我们可以拿到当前的value值 那么接下来我们就要去改变store里面的值
+
+根据前面的redux工作流程，接下来我们首先要去创造**Action**
+
+```
+changeInputValue(e){
+    const action ={
+        type:'change_input_value',
+        value:e.target.value
+    }
+}
+```
+* **Action**里面有两个属性，第一个则是对**action**的描述，第二个则是要改变的值
