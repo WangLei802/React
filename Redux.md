@@ -187,7 +187,7 @@ changeInputValue(e){
 ```
 * **Action**里面有两个属性，第一个则是对**action**的描述，第二个则是要改变的值
 
-* 到这里还不能说可以改变到**store**里面的值，需要注意的是创建完**action**我们必须去通过**dispatch()** 方法传递给 **store**
+* 到这里还不能说可以改变到**store**里面的值，需要注意的是创建完**action**我们必须去通过**dispatch()** 方法传递给 **store** 从而建立联系
 ```
 changeInputValue(e){
     const action ={
@@ -196,4 +196,55 @@ changeInputValue(e){
     }
     store.dispatch(action)
 }
+```
+
+## **store的自动推送策略**
+ 通过react 的官网流程图我们可以看到，**store**只是一个仓库，他没有管理能力，然而他会把接收到的**action**传送给**reducer**，我们在reducer控制打印台打印结果看下
+
+ ```
+ export default (state = defaultState,action)=>{
+    console.log(state,action)
+    return state
+}
+ ```
+* **state:** 指的是原始仓库里的状态。
+* **action:** 指的是action新传递的状态。
+
+现在通过浏览器控制台打印我们可以清楚的看到 **Reducer** 已经成功地拿到传递过来的新数据，接下来就要去改变 **store** 里面的值。
+
+* 首先我们要去判断 **action** 中的 **type** 类型是否正确，如若正确，则需要声明一个新的变量 **newState** 
+* 然后进行赋值操作并将新声明的 **newState** return出去
+* **需要注意的是：** **Reducer**里只能接收 **state** ，不能改变 **state**
+
+```
+export default (state = defaultState,action)=>{
+    <!-- 此处就是action提交过来的类型值 去做判断 -->
+    if(action.type === 'changeInput'){
+        let newState = JSON.parse(JSON.stringify(state))     //深度拷贝state
+        newState.inputValue = action.value
+        return newState
+    }
+    return state
+}
+```
+
+此时 **store** 中的数据已完成更新，但是我们在组件中可以看到数据并没有更新，我们需要在todolist.js中 **constructor** 添加下面代码
+
+```
+constructor(props){
+    super(props)
+    this.state=store.getState();
+    this.changeInputValue= this.changeInputValue.bind(this)
+    //----------关键代码-----------start
+    this.storeChange = this.storeChange.bind(this)  //转变this指向
+    store.subscribe(this.storeChange) //订阅Redux的状态
+    //----------关键代码-----------end
+}
+
+```
+我们还需在下面写 **storeChange** 的方法 ，并且重新setState一次就可以实现组件也是变化的。在代码的最下方，编写storeChange方法。
+```
+storeChange(){
+     this.setState(store.getState())
+ }
 ```
