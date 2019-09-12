@@ -3,7 +3,8 @@ import './Todolist.css'
 import 'antd/dist/antd.css'
 import store from './store'
 import { Input, Button, List} from 'antd'
-
+// import { CHANGE_INPUT , ADD_ITEM , DEL } from './store/actionTypes'
+import {changeInputAction,addItemAction,deleteItemAction} from './store/actionCreators'
 class TodoList extends Component {
     constructor(props) {
         super(props);
@@ -15,17 +16,16 @@ class TodoList extends Component {
     }
     changeInputValue(e){
         // Action就是一个对象
-        const action ={
-            type:'changeInput',                  //对action的描述
-            value:e.target.value                        //要改变的值
-        }
+        const action = changeInputAction(e.target.value)
         //要通过dispatch()方法传递给store
         store.dispatch(action)
     }
     click(){
-        const action = {
-            type:'addItem'
-        }
+        const action = addItemAction()
+        store.dispatch(action)
+    }
+    del(index){
+        const action = deleteItemAction(index)
         store.dispatch(action)
     }
     render() { 
@@ -39,7 +39,7 @@ class TodoList extends Component {
                         <List 
                         bordered
                         dataSource={this.state.list}
-                        renderItem={item=>(<List.Item>{item}</List.Item>)}
+                        renderItem={(item,index)=>(<List.Item onClick={this.del.bind(this,index)}>{item}</List.Item>)}
                         /> 
                     </div>
                            
