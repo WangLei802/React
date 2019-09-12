@@ -265,9 +265,7 @@ click(){
 
 ```
 click(){
-    const action = {
-        type:ADD_ITEM
-    }
+    const action = { type:'addItem'}
     store.dispatch(action)
 }
 ```
@@ -289,6 +287,112 @@ export default (state = defaultState,action)=>{
         return newState
     }
      //关键代码------------------end----------
+    return state
+}
+```
+
+### **Redux实现ToDoList的删除功能**
+
+```
+<div style={{margin:'10px',width:'300px'}}>
+    <List
+        bordered
+        dataSource={this.state.list}
+        renderItem={(item,index)=>(<List.Item onClick={this.deleteItem.bind(this,index)}>{item}</List.Item>)}
+    />    
+</div>
+deleteItem(index){
+    const action = {
+        type:'deleteItem',
+        index
+    }
+    store.dispatch(action)
+}
+```
+在reducer中业务逻辑实现
+
+```
+if(action.type === 'deleteItem' ){ 
+    let newState = JSON.parse(JSON.stringify(state)) 
+    newState.list.splice(action.index,1)  //删除数组中对应的值
+    return newState
+}
+```
+
+此刻就可以点击删除列表的每一项
+
+
+### **工作中写Redux的小技巧**
+
+写Redux Action的时候，我们写了很多Action的派发，产生了很多Action Types，如果需要Action的地方我们就自己命名一个Type,会出现两个基本问题：
+
+* 这些Types如果不统一管理，不利于大型项目的服用，设置会长生冗余代码。
+* 因为Action里的Type，一定要和Reducer里的type一一对应在，所以这部分代码或字母写错后，浏览器里并没有明确的报错，这给调试带来了极大的困难。
+
+
+所以避免以上问题发生，可以单独拆分出一个文件.在 **src/store** 文件下面，建立一个acyionTypes.js文件，然后把所有的 **type** 类型集中放到该文件进行统一管理
+
+```
+export const  CHANGE_INPUT = 'changeInput'
+export const  ADD_ITEM = 'addItem'
+export const  DEL = 'del'
+```
+
+完了在todolist文件中引入
+```
+import { CHANGE_INPUT , ADD_ITEM , DEL } from './store/actionTypes'
+
+<!-- 现在就可以用这些常量来替代原来的Type值 -->
+changeInputValue(e){
+    // Action就是一个对象
+    const action ={
+        type:CHANGE_INPUT,                  //对action的描述
+        value:e.target.value                        //要改变的值
+    }
+    //要通过dispatch()方法传递给store
+    store.dispatch(action)
+}
+click(){
+    const action = {
+        type:ADD_ITEM
+    }
+    store.dispatch(action)
+}
+del(index){
+    const action = {
+        type:DEL,
+        index
+    }
+    store.dispatch(action)
+}
+```
+
+接下来我们在修改 **reducer** 文件中的代码
+
+```
+export default (state = defaultState,action)=>{  //就是一个方法函数
+    console.log(state,action)
+    let newState = JSON.parse(JSON.stringify(state)) //深度拷贝state
+    if(action){
+        switch(action.type){
+            case CHANGE_INPUT:
+                newState.inputValue = action.value
+                return newState   
+                break
+            case ADD_ITEM:
+                // let newState = JSON.parse(JSON.stringify(state)) 
+                console.log(newState)
+                newState.list.push(newState.inputValue)  //push新的内容到列表中去
+                newState.inputValue = ''
+                return newState
+                break
+            case DEL:
+                // let newState = JSON.parse(JSON.stringify(state)) 
+                newState.list.splice(action.index,1)  //push新的内容到列表中去
+                return newState
+                break
+        }
+    }
     return state
 }
 ```
