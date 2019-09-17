@@ -398,3 +398,42 @@ export default (state = defaultState,action)=>{  //就是一个方法函数
     return state
 }
 ```
+
+## **上面我们对Action中的Type进行了改造，那么接下来我们继续对Redux Action进行代码打磨**
+
+**在src/store下建立actionCreators.js文件，在引入上面文件actionTypes.js文件,并对其进行修改如下**
+```
+import  {CHANGE_INPUT,ADD_ITEM,DEL}  from './actionTypes'
+
+export const changeInputAction = (value)=>({
+    type:CHANGE_INPUT,
+    value
+})
+export const addItemAction  = ()=>({
+    type:ADD_ITEM
+})
+export const deleteItemAction  = (index)=>({
+    type:DEL,
+    index
+})
+```
+
+**接下来将其文件引入到todolist.js文件中,并将其方法进行修改如下**
+```
+import {changeInputAction,addItemAction,deleteItemAction} from './store/actionCreators'
+changeInputValue(e){
+    // Action就是一个对象
+    const action = changeInputAction(e.target.value)
+    //要通过dispatch()方法传递给store
+    store.dispatch(action)
+}
+click(){
+    const action = addItemAction()
+    store.dispatch(action)
+}
+del(index){
+    const action = deleteItemAction(index)
+    store.dispatch(action)
+}
+```
+**上面这些就实现了Redux Action 和我们业务逻辑的分离，这样操作可使我们在工作中更好的去维护我们的程序。**
