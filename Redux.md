@@ -339,6 +339,8 @@ export const  DEL = 'del'
 ```
 
 完了在todolist文件中引入
+
+**修改Action方法**
 ```
 import { CHANGE_INPUT , ADD_ITEM , DEL } from './store/actionTypes'
 
