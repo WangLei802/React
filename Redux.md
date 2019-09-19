@@ -447,3 +447,44 @@ del(index){
 
 
 * **Reducer必须是纯函数**
+
+## **UI 组件与业务逻辑的拆分**
+上面就是redux的一些基础知识及我们工作中的一些常用写法，但我们在正常工作过中往往不止于此，在我们多人合作中，我们往往会将逻辑部分跟UI部分拆分。接下来就讲我门上述的todolist这个demo进行逻辑层与UI层的拆分
+
+我们所有的UI和逻辑都在todolist这个js文件中编写，他两个完全耦合在一块
+
+* 在src文件下建立todolistUI.js文件，再将todolist文件中JSX部分代码粘贴过来
+* antd库引入，再将用到的css及用到的组件copy过来
+```
+import React, { Component,Fragment } from 'react';
+import './Todolist.css'
+import 'antd/dist/antd.css'
+import { Input, Button, List} from 'antd'
+class TodoListUi  extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {  }
+    }
+    render() { 
+        return ( 
+            <Fragment>
+                <div className='margin'>
+                    <h1>Antd-UI框架</h1>
+                    <Input value={this.state.inputValue} style={{ width:'250px'}} onChange={this.changeInputValue.bind(this)}/>
+                    <Button type="primary" onClick={this.click.bind(this)}>Primary</Button>
+                    <div style={{margin: '20px auto',width:'600px',}}>
+                        <List 
+                        bordered
+                        dataSource={this.state.list}
+                        renderItem={(item,index)=>(<List.Item onClick={this.del.bind(this,index)}>{item}</List.Item>)}
+                        /> 
+                    </div>
+                           
+                </div>    
+            </Fragment>
+         );
+    }
+}
+ 
+export default TodoListUi ;
+```
