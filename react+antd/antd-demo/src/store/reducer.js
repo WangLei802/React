@@ -2,7 +2,7 @@
 import {CHANGE_INPUT,ADD_ITEM,DEL} from './actionTypes'
 //默认数据
 const defaultState = {
-    inputValue : '请输入要为你服务的小姐姐Nmae',
+    inputValue : '',
     list:[
         '早上4点起床，锻炼身体',
         '中午下班游泳一小时'
