@@ -488,3 +488,59 @@ class TodoListUi  extends Component {
  
 export default TodoListUi ;
 ```
+
+**但是这并没有TodoListUI.js组件所需要的state(状态信息)，接下来需要改造父组件进行传递值(用到了我们之前学到的传递值)**
+
+* 在todolist.js文件中引入我们的todolistUI组件
+```
+import TodoListUI from './TodoListUI';
+<!-- render函数中如下写法 -->
+render() { 
+    return ( 
+        <TodoListUI />
+    );
+}
+```
+
+以上完成了UI与业务层的分离，接下来我们需要改变todolistUi文件中的属性，将两个组件进行整合
+
+**两个组件的整合用大白话来说就是通过属性传值，把子组件所需要的值传递给子组件，子组件进行相应的绑定就行了
+
+在todolist中render函数如下进行属性值传递
+```
+render() { 
+    return ( 
+        <TodoListUI
+            inputValue={this.state.inputValue}
+            list={this.state.list}
+            changeInputValue={this.changeInputValue}
+            click={this.click}
+            del={this.del}
+        />
+    );
+}
+```
+
+在todolistUI中接受并进行绑定改造，代码如下
+```
+ render() { 
+    return ( 
+        <Fragment>
+            <div className='margin'>
+                <h1>Antd-UI框架</h1>
+                <Input value={this.props.inputValue} style={{ width:'250px'}} onChange={this.props.changeInputValue.bind(this)}/>
+                <Button type="primary" onClick={this.props.click.bind(this)}>Primary</Button>
+                <div style={{margin: '20px auto',width:'600px',}}>
+                    <List 
+                    bordered
+                    dataSource={this.props.list}
+                    renderItem={(item,index)=>(<List.Item onClick={this.props.del.bind(this,index)}>{item}</List.Item>)}
+                    /> 
+                </div>
+                        
+            </div>    
+        </Fragment>
+    );
+}
+```
+以上就是我们组建于业务逻辑拆分的简单学习，在工作中我们要去思考每个组件的耦合性，从而进行合理的组件与业务逻辑的合理拆分
