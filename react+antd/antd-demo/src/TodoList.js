@@ -1,9 +1,10 @@
-import React, { Component,Fragment } from 'react';
+import React, { Component } from 'react';
 import './Todolist.css'
-import 'antd/dist/antd.css'
+// import 'antd/dist/antd.css'
 import store from './store'
-import { Input, Button, List} from 'antd'
+// import { Input, Button, List} from 'antd'
 // import { CHANGE_INPUT , ADD_ITEM , DEL } from './store/actionTypes'
+import TodoListUI from './TodoListUI';
 import {changeInputAction,addItemAction,deleteItemAction} from './store/actionCreators'
 class TodoList extends Component {
     constructor(props) {
@@ -30,21 +31,13 @@ class TodoList extends Component {
     }
     render() { 
         return ( 
-            <Fragment>
-                <div className='margin'>
-                    <h1>Antd-UI框架</h1>
-                    <Input placeholder={this.state.inputValue} style={{ width:'250px'}} onChange={this.changeInputValue.bind(this)}/>
-                    <Button type="primary" onClick={this.click.bind(this)}>Primary</Button>
-                    <div style={{margin: '20px auto',width:'600px',}}>
-                        <List 
-                        bordered
-                        dataSource={this.state.list}
-                        renderItem={(item,index)=>(<List.Item onClick={this.del.bind(this,index)}>{item}</List.Item>)}
-                        /> 
-                    </div>
-                           
-                </div>    
-            </Fragment>
+            <TodoListUI
+                inputValue={this.state.inputValue}
+                list={this.state.list}
+                changeInputValue={this.changeInputValue}
+                click={this.click}
+                del={this.del}
+            />
          );
     }
     storeChange(){
