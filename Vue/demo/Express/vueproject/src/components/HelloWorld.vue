@@ -1,24 +1,32 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <h2>Ecosystem</h2>
+    <ul>
+      <li v-for="(item,index) in arr" :key="index">{{item.title}}：{{item.text}}</li>
+    </ul>
   </div>
 </template>
 
 <script>
+import {
+  product
+} from '@/api/index/index'
 export default {
   name: 'HelloWorld',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      arr:[]
     }
   },
   mounted () {
-    this.$get('/product')
-      .then((response) => {
-        console.log(response.data)
-      })
+    product().then(res=>{
+      console.log(res)
+      this.arr = res.data
+      console.log(this.arr)
+    }).catch(error => {
+      console.log(error);
+    });
   },
 }
 

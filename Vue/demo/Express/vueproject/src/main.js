@@ -3,10 +3,10 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import {post,get} from './request/http'
+// import {post,get} from './request/http'
 
-Vue.prototype.$post = post;
-Vue.prototype.$get = get;
+// Vue.prototype.$post = post;
+// Vue.prototype.$get = get;
 Vue.config.productionTip = false
 // var url = process.env.BASE_API
 // axios.get(url+'/product')
