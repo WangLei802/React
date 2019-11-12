@@ -1,5 +1,12 @@
 import  {GET_LIST,CHANGE_INPUT,ADD_ITEM,DEL}  from './actionTypes'
 
+export const getTodoList = () =>{
+    return (dispatch)=>{
+        const data = [1,2]
+        const action = getList(data)
+        dispatch(action)
+    }
+}
 export const getList = (value)=>({
     type:GET_LIST,
     value

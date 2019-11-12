@@ -5,7 +5,7 @@ import store from './store'
 // import { Input, Button, List} from 'antd'
 // import { CHANGE_INPUT , ADD_ITEM , DEL } from './store/actionTypes'
 import TodoListUI from './TodoListUI';
-import {changeInputAction,addItemAction,deleteItemAction,getList} from './store/actionCreators'
+import {changeInputAction,addItemAction,deleteItemAction,getList,getTodoList} from './store/actionCreators'
 import { Modal} from 'antd'
 const { confirm } = Modal;
 class TodoList extends Component {
@@ -18,8 +18,8 @@ class TodoList extends Component {
         store.subscribe(this.storeChange) //订阅Redux的状态
     }
     componentDidMount(){
-        let data = [1,2]
-        const action = getList(data)
+        // let data = [1,2]
+        const action = getTodoList()
         store.dispatch(action)
     }
     changeInputValue(e){
