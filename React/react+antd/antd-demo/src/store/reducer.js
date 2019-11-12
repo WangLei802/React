@@ -1,5 +1,5 @@
 // 该文件为管理模块
-import {CHANGE_INPUT,ADD_ITEM,DEL} from './actionTypes'
+import {GET_LIST,CHANGE_INPUT,ADD_ITEM,DEL} from './actionTypes'
 //默认数据
 const defaultState = {
     inputValue : '',
@@ -13,10 +13,15 @@ state: 指的是原始仓库里的状态。
 action: 指的是action新传递的状态。
 */
 export default (state = defaultState,action)=>{  //就是一个方法函数
+    console.log('5555')
     console.log(state,action)
     let newState = JSON.parse(JSON.stringify(state)) //深度拷贝state
     if(action){
         switch(action.type){
+            case GET_LIST:
+                newState.list = action.value
+                return newState   
+                break
             case CHANGE_INPUT:
                 newState.inputValue = action.value
                 return newState   

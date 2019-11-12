@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import './Todolist.css'
 import 'antd/dist/antd.css'
 import { Input, Button, List} from 'antd'
+// const { confirm } = Modal;
 const TodoListUi = (props)=>{
     return ( 
         <Fragment>
