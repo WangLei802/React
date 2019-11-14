@@ -544,3 +544,51 @@ render() {
 }
 ```
 以上就是我们组建于业务逻辑拆分的简单学习，在工作中我们要去思考每个组件的耦合性，从而进行合理的组件与业务逻辑的合理拆分
+
+
+## **Redux-thunk的使用方法**
+
+我们可以将向后台请求数据的程序放在我们的中间件中执行，这样就形成了一套完整的Redux流程
+
+**安装Redux-thunk**
+```
+npm install --save redux-thunk
+```
+我们需要在store/index.js中改写文件，一般情况下我们只需要将以下代码作为工作代码、固定代码就好了
+
+```
+import { createStore , applyMiddleware ,compose } from 'redux'  //  引入createStore方法
+import reducer from './reducer'    
+import thunk from 'redux-thunk'
+
+const composeEnhancers =   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({}):compose
+
+const enhancer = composeEnhancers(applyMiddleware(thunk))
+
+const store = createStore( reducer, enhancer) // 创建数据存储仓库
+export default store   //暴露出去
+```
+
+接下来我们只需在 **actionCreators.js** 文件里编写业务逻辑
+
+```
+// 中间件  (可将后台请求数据这步操作放在中间件)
+export const getTodoList = () =>{
+    // 此函数可直接传递进dispatch，我们只需dispatch(action)直接调用就好
+    return (dispatch)=>{
+        const data = [1,3]
+        const action = getList(data)
+        dispatch(action)
+    }
+}
+```
+
+我们编写好组件后，我们只需在我们所需要的组件中引入方法
+```
+componentDidMount(){
+    // let data = [1,2]
+    const action = getTodoList()
+    store.dispatch(action)
+}
+```
